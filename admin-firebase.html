@@ -159,6 +159,13 @@
     auth.onAuthStateChanged(user => {
       if (user) {
         localStorage.setItem(SESSION_KEY, JSON.stringify({ uid: user.uid, email: user.email }));
+        // Record login activity
+        db.collection('logins').add({
+          uid: user.uid,
+          email: user.email,
+          name: user.displayName || '',
+          time: firebase.firestore.FieldValue.serverTimestamp()
+        }).catch(() => {});
         window.location.href = 'dashboard-firebase.html';
       }
     });
@@ -170,7 +177,14 @@
       setLoading('si-btn', true);
 
       try {
-        await auth.signInWithEmailAndPassword(email, password);
+        const cred = await auth.signInWithEmailAndPassword(email, password);
+        // Record login
+        db.collection('logins').add({
+          uid: cred.user.uid,
+          email: cred.user.email,
+          name: cred.user.displayName || '',
+          time: firebase.firestore.FieldValue.serverTimestamp()
+        }).catch(() => {});
         showAlert('Success! Redirecting…', 'success');
         // onAuthStateChanged handles redirect
       } catch (err) {
