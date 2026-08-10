@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CAIE Qualification Levels</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+      max-width: 520px;
+      margin: 60px auto;
+      padding: 0 20px;
+      background: #f5f6f8;
+    }
+    .card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 28px 24px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      margin-bottom: 16px;
+    }
+    h1 {
+      font-size: 18px;
+      font-weight: 600;
+      margin: 0 0 20px 0;
+      color: #1a1a2e;
+    }
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+      color: #555;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+    select {
+      width: 100%;
+      padding: 12px 14px;
+      font-size: 15px;
+      border: 1.5px solid #d1d5db;
+      border-radius: 8px;
+      background: #fff;
+      color: #1f2937;
+      cursor: pointer;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236b7280' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+    }
+    select:focus {
+      outline: none;
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12);
+    }
+    select:hover { border-color: #9ca3af; }
+
+    /* Dynamic info panel */
+    .info-panel {
+      background: #fff;
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      display: none;
+      animation: fadeIn 0.25s ease;
+    }
+    .info-panel.active { display: block; }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .info-panel h2 {
+      font-size: 16px;
+      font-weight: 600;
+      margin: 0 0 10px 0;
+      color: #1a1a2e;
+    }
+    .info-panel p {
+      font-size: 14px;
+      color: #4b5563;
+      line-height: 1.6;
+      margin: 0;
+    }
+    .tag {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      margin-bottom: 12px;
+    }
+    .tag.checkpoint { background: #dbeafe; color: #1e40af; }
+    .tag.igcse      { background: #dcfce7; color: #166534; }
+    .tag.o-level    { background: #fef3c7; color: #92400e; }
+    .tag.as-level   { background: #f3e8ff; color: #6b21a8; }
+    .tag.a2-level   { background: #ffe4e6; color: #9f1239; }
+
+    .note {
+      margin-top: 16px;
+      font-size: 12px;
+      color: #6b7280;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <h1>Cambridge Assessment International Education</h1>
+    <label for="caie-level">Select Qualification Level</label>
+    <select id="caie-level" name="caie-level">
+      <option value="" disabled selected>Choose a level…</option>
+      <option value="checkpoint">Checkpoint</option>
+      <option value="igcse">IGCSE</option>
+      <option value="o-level">O Level</option>
+      <option value="as-level">AS Level</option>
+      <option value="a2-level">A2 Level</option>
+    </select>
+    <p class="note">
+      Cambridge Assessment International Education (CAIE) offers qualifications at each of these levels, from lower-secondary Checkpoint through to advanced A2 Level.
+    </p>
+  </div>
+
+  <!-- Dynamic frontend panel -->
+  <div id="info-panel" class="info-panel">
+    <div id="info-tag" class="tag"></div>
+    <h2 id="info-title"></h2>
+    <p id="info-desc"></p>
+  </div>
+
+  <script>
+    const data = {
+      checkpoint: {
+        title: 'Cambridge Checkpoint',
+        tag: 'Lower Secondary',
+        tagClass: 'checkpoint',
+        desc: 'Checkpoint is designed for students typically aged 11–14. It assesses preparation for IGCSE / O Level by testing skills and knowledge in English, Mathematics, and Science.'
+      },
+      igcse: {
+        title: 'International General Certificate of Secondary Education',
+        tag: 'Upper Secondary',
+        tagClass: 'igcse',
+        desc: 'IGCSE is the world\'s most popular international qualification for 14–16 year olds. It develops learner knowledge, understanding, and skills across a wide range of subjects.'
+      },
+      'o-level': {
+        title: 'O Level',
+        tag: 'Upper Secondary',
+        tagClass: 'o-level',
+        desc: 'Cambridge O Level is an internationally recognised qualification for 14–16 year olds. It is equivalent to IGCSE and prepares students for advanced study.'
+      },
+      'as-level': {
+        title: 'AS Level',
+        tag: 'Advanced Subsidiary',
+        tagClass: 'as-level',
+        desc: 'AS Level is the first half of the A Level programme. It provides a solid foundation of knowledge and skills and can be a standalone qualification or counted towards a full A Level.'
+      },
+      'a2-level': {
+        title: 'A2 Level',
+        tag: 'Advanced',
+        tagClass: 'a2-level',
+        desc: 'A2 Level is the second half of A Level, building on AS Level content to provide deeper subject knowledge and critical thinking skills required for university entry.'
+      }
+    };
+
+    const select = document.getElementById('caie-level');
+    const panel = document.getElementById('info-panel');
+    const tagEl = document.getElementById('info-tag');
+    const titleEl = document.getElementById('info-title');
+    const descEl = document.getElementById('info-desc');
+
+    select.addEventListener('change', () => {
+      const key = select.value;
+      if (!key || !data[key]) {
+        panel.classList.remove('active');
+        return;
+      }
+      const info = data[key];
+      tagEl.textContent = info.tag;
+      tagEl.className = 'tag ' + info.tagClass;
+      titleEl.textContent = info.title;
+      descEl.textContent = info.desc;
+      panel.classList.add('active');
+    });
+  </script>
+
+</body>
+</html>
