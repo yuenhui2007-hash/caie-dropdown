@@ -3,15 +3,74 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CAIE Qualification Levels</title>
+  <title>Qualification Levels</title>
   <style>
-    * { box-sizing: border-box; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+      background: #f5f6f8;
+    }
+    /* Navbar */
+    .navbar {
+      background: #1a1a2e;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      height: 56px;
+    }
+    .nav-brand {
+      color: #fff;
+      font-size: 16px;
+      font-weight: 600;
+      margin-right: 32px;
+    }
+    .nav-item {
+      position: relative;
+      height: 56px;
+      display: flex;
+      align-items: center;
+    }
+    .nav-link {
+      color: rgba(255,255,255,0.8);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      padding: 0 16px;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      transition: color 0.15s ease;
+    }
+    .nav-link:hover { color: #fff; }
+    .dropdown {
+      position: absolute;
+      top: 56px;
+      left: 0;
+      background: #fff;
+      border-radius: 0 0 8px 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+      min-width: 160px;
+      display: none;
+      overflow: hidden;
+      z-index: 100;
+    }
+    .nav-item:hover .dropdown { display: block; }
+    .dropdown a {
+      display: block;
+      padding: 12px 16px;
+      color: #374151;
+      text-decoration: none;
+      font-size: 14px;
+      transition: background 0.1s ease;
+    }
+    .dropdown a:hover { background: #f3f4f6; }
+
+    /* Content */
+    .content {
       max-width: 520px;
       margin: 60px auto;
       padding: 0 20px;
-      background: #f5f6f8;
     }
     .card {
       background: #fff;
@@ -26,35 +85,20 @@
       margin: 0 0 20px 0;
       color: #1a1a2e;
     }
-    label {
-      display: block;
-      font-size: 13px;
+    .tag {
+      display: inline-block;
+      font-size: 11px;
       font-weight: 500;
-      color: #555;
-      margin-bottom: 8px;
       text-transform: uppercase;
-      letter-spacing: 0.4px;
+      letter-spacing: 0.5px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      margin-bottom: 12px;
     }
-    select {
-      width: 100%;
-      padding: 12px 14px;
-      font-size: 15px;
-      border: 1.5px solid #d1d5db;
-      border-radius: 8px;
-      background: #fff;
-      color: #1f2937;
-      cursor: pointer;
-      transition: border-color 0.15s ease, box-shadow 0.15s ease;
-      appearance: none;
-    }
-    select:focus {
-      outline: none;
-      border-color: #3b82f6;
-      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12);
-    }
-    select:hover { border-color: #9ca3af; }
+    .tag.igcse    { background: #dcfce7; color: #166534; }
+    .tag.alevel   { background: #ffe4e6; color: #9f1239; }
+    .tag.ielts    { background: #dbeafe; color: #1e40af; }
 
-    /* Dynamic info panel */
     .info-panel {
       background: #fff;
       border-radius: 12px;
@@ -80,28 +124,6 @@
       line-height: 1.6;
       margin: 0;
     }
-    .tag {
-      display: inline-block;
-      font-size: 11px;
-      font-weight: 500;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      padding: 4px 10px;
-      border-radius: 999px;
-      margin-bottom: 12px;
-    }
-    .tag.checkpoint { background: #dbeafe; color: #1e40af; }
-    .tag.igcse      { background: #dcfce7; color: #166534; }
-    .tag.o-level    { background: #fef3c7; color: #92400e; }
-    .tag.as-level   { background: #f3e8ff; color: #6b21a8; }
-    .tag.a2-level   { background: #ffe4e6; color: #9f1239; }
-
-    .note {
-      margin-top: 16px;
-      font-size: 12px;
-      color: #6b7280;
-      line-height: 1.5;
-    }
     .admin-link {
       text-align: center;
       margin-top: 12px;
@@ -117,28 +139,34 @@
 </head>
 <body>
 
-  <div class="card">
-    <h1>Select Your Programme</h1>
-    <label for="subject-level">Select Subject Level</label>
-    <select id="subject-level" name="subject-level">
-      <option value="" disabled selected>Choose a level…</option>
-      <option value="alevel">A Level</option>
-      <option value="igcse">IGCSE</option>
-      <option value="ielts">IELTS</option>
-    </select>
-    <p class="note">
-      Choose your programme to view details and requirements.
-    </p>
-    <div class="admin-link">
-      <a href="admin-firebase.html">🔐 Admin Panel</a>
+  <nav class="navbar">
+    <div class="nav-brand">Qualifications</div>
+    <div class="nav-item">
+      <span class="nav-link">Subjects ▾</span>
+      <div class="dropdown">
+        <a href="#" data-subject="igcse">IGCSE</a>
+        <a href="#" data-subject="alevel">A Level</a>
+        <a href="#" data-subject="ielts">IELTS</a>
+      </div>
     </div>
-  </div>
+  </nav>
 
-  <!-- Dynamic frontend panel -->
-  <div id="info-panel" class="info-panel">
-    <div id="info-tag" class="tag"></div>
-    <h2 id="info-title"></h2>
-    <p id="info-desc"></p>
+  <div class="content">
+    <div class="card">
+      <h1>Select Your Programme</h1>
+      <p style="font-size:14px;color:#6b7280;margin-bottom:16px;">
+        Hover over <strong>Subjects</strong> in the navigation bar to choose a programme.
+      </p>
+      <div class="admin-link">
+        <a href="admin-firebase.html">🔐 Admin Panel</a>
+      </div>
+    </div>
+
+    <div id="info-panel" class="info-panel">
+      <div id="info-tag" class="tag"></div>
+      <h2 id="info-title"></h2>
+      <p id="info-desc"></p>
+    </div>
   </div>
 
   <script>
@@ -146,7 +174,7 @@
       alevel: {
         title: 'A Level',
         tag: 'Advanced Level',
-        tagClass: 'a2-level',
+        tagClass: 'alevel',
         desc: 'A Level is a subject-based qualification for students typically aged 16–19. It is widely recognised for university entrance and provides in-depth knowledge in chosen subjects.'
       },
       igcse: {
@@ -158,29 +186,28 @@
       ielts: {
         title: 'International English Language Testing System',
         tag: 'Language Proficiency',
-        tagClass: 'checkpoint',
+        tagClass: 'ielts',
         desc: 'IELTS is the world\'s most popular English language proficiency test for higher education and global migration. It assesses listening, reading, writing, and speaking skills.'
       }
     };
 
-    const select = document.getElementById('subject-level');
     const panel = document.getElementById('info-panel');
     const tagEl = document.getElementById('info-tag');
     const titleEl = document.getElementById('info-title');
     const descEl = document.getElementById('info-desc');
 
-    select.addEventListener('change', () => {
-      const key = select.value;
-      if (!key || !data[key]) {
-        panel.classList.remove('active');
-        return;
-      }
-      const info = data[key];
-      tagEl.textContent = info.tag;
-      tagEl.className = 'tag ' + info.tagClass;
-      titleEl.textContent = info.title;
-      descEl.textContent = info.desc;
-      panel.classList.add('active');
+    document.querySelectorAll('.dropdown a').forEach(link => {
+      link.addEventListener('click', e => {
+        e.preventDefault();
+        const key = link.dataset.subject;
+        const info = data[key];
+        if (!info) return;
+        tagEl.textContent = info.tag;
+        tagEl.className = 'tag ' + info.tagClass;
+        titleEl.textContent = info.title;
+        descEl.textContent = info.desc;
+        panel.classList.add('active');
+      });
     });
   </script>
 
